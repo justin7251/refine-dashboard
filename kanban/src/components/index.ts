@@ -1,1 +1,3 @@
-export { Header } from "./header";
+
+export * from "./layout";
+export * from "./text";
