@@ -31,8 +31,14 @@ import {
   DashboardOutlined
 } from '@mui/icons-material';
 
-import { Home, ForgotPassword, Login, Register, Agent } from "./pages";
-
+import {
+  Home,
+  ForgotPassword,
+  Login,
+  Register,
+  Agent,
+  Properties
+} from "./pages";
 
 function App() {
   return (
@@ -58,8 +64,9 @@ function App() {
                     },
                   },
                   {
-                    name: "property",
-                    list: "/property",
+                    name: "properties",
+                    list: "/properties",
+                    show: "/property-detail",
                     icon: <VillaOutlined />,
                     meta: {
                       canDelete: true,
