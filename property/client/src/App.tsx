@@ -22,23 +22,18 @@ import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import { authProvider } from "./authProvider";
 import { Header } from "./components/header";
 import { ColorModeContextProvider } from "./contexts/color-mode";
-import {
-  AccountCircleOutlined,
-  ChatBubbleOutline,
-  PeopleAltOutlined,
-  StarOutlineRounded,
-  VillaOutlined,
-  DashboardOutlined
-} from '@mui/icons-material';
 
 import {
   Home,
   ForgotPassword,
   Login,
   Register,
-  Agent,
-  Properties
+  Agent
 } from "./pages";
+
+import { PropertyList, PropertyCreate, PropertyEdit, PropertyDetail } from "./pages/properties";
+
+import { resources } from "./config/resources";
 
 function App() {
   return (
@@ -54,54 +49,7 @@ function App() {
                 notificationProvider={notificationProvider}
                 routerProvider={routerBindings}
                 authProvider={authProvider}
-                resources={[
-                  {
-                    name: "home",
-                    list: "/",
-                    meta: {
-                      label: "Dashboard",
-                      icon: <DashboardOutlined />,
-                    },
-                  },
-                  {
-                    name: "properties",
-                    list: "/properties",
-                    show: "/property-detail",
-                    icon: <VillaOutlined />,
-                    meta: {
-                      canDelete: true,
-                    },
-                  },
-                  {
-                    name: "agent",
-                    icon: <PeopleAltOutlined />,
-                    meta: {
-                      canDelete: true,
-                    },
-                  },
-                  {
-                    name: "review",
-                    icon: <StarOutlineRounded />,
-                    meta: {
-                      canDelete: true,
-                    },
-                  },
-                  {
-                    name: "message",
-                    icon: <ChatBubbleOutline />,
-                    meta: {
-                      canDelete: true,
-                    },
-                  },
-                  {
-                    name: "my-profile",
-                    icon: <AccountCircleOutlined />,
-                    options: { label: 'My Profile'},
-                    meta: {
-                      canDelete: true,
-                    },
-                  },
-                ]}
+                resources={resources}
                 options={{
                   syncWithLocation: true,
                   warnWhenUnsavedChanges: true,
@@ -125,8 +73,19 @@ function App() {
                     <Route index element={<Home />} />
                     <Route
                       index
-                      element={<NavigateToResource resource="blog_posts" />}
+                      element={<NavigateToResource resource="properties" />}
                     />
+                    <Route path="properties">
+                        <Route index element={<PropertyList />} />
+                        <Route
+                            path="create"
+                            element={<PropertyCreate />}
+                        />
+                        <Route
+                            path="edit/:id"
+                            element={<PropertyEdit />}
+                        />
+                    </Route>
                     <Route path="*" element={<ErrorComponent />} />
                   </Route>
                   <Route
