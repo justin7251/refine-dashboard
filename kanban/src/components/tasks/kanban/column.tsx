@@ -1,14 +1,34 @@
-import { useDroppable } from '@dnd-kit/core'
-import React from 'react'
+import { UseDroppableArguments, useDroppable } from '@dnd-kit/core'
+import React, { Children } from 'react'
 
 import { Badge, Button, Skeleton, Space } from "antd";
 import { Text } from "../../../components";
+import { PlusCircleFilled, PlusOutlined } from '@ant-design/icons';
 
-const KanbanColumn = () => {
-    const {isOver, setNodeRef, active } = useDroppable({
-        id: '',
-        data: ''
-    });
+
+type Props = {
+    id: string,
+    title: string,
+    description: React.ReactNode,
+    count: number,
+    data?: UseDroppableArguments['data'],
+    onAddClick?: (args: {id: string}) => void
+}
+
+const KanbanColumn = ({
+    children,
+    id,
+    title,
+    description,
+    count,
+    data,
+    onAddClick
+  }: React.PropsWithChildren<Props>) => {
+    const {isOver, setNodeRef, active } = useDroppable({id, data});
+
+    const onAddClickHandler = () => {
+        onAddClick?.({ id })
+      }
 
     return (
         <div
@@ -23,7 +43,7 @@ const KanbanColumn = () => {
                 <Space style={{ width: '100%', justifyContent: 'space-between'}}>
                     <Space>
                         <Text
-                            ellipsis={{ tooltip: 'Titlte To Do'}}
+                            ellipsis={{ tooltip: title}}
                             size="xs"
                             strong
                             style={{
@@ -31,10 +51,37 @@ const KanbanColumn = () => {
                                 whiteSpace: 'nowrap'
                             }}
                         >
-                            Title
+                            {title}
                         </Text>
+                        { !!count && <Badge count={count} color="cyan" />}
                     </Space>
+                    <Button
+                        shape='circle'
+                        icon={<PlusOutlined/>}
+                        onClick={onAddClickHandler}
+                    />
                 </Space>
+                {description}
+            </div>
+            <div
+                style={{
+                    flex: 1,
+                    overflowY: active ? 'unset': 'scroll',
+                    border: '2px dashed transparent',
+                    borderColor: isOver ? '#000040' : 'transparent',
+                    borderRadius: '4px'
+                }}
+            >
+                <div
+                    style={{
+                        marginTop: "12px",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "8px"
+                    }}
+                >
+                    {children}
+                </div>
             </div>
 
         </div>
