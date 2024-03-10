@@ -21,13 +21,14 @@ const KanbanColumn = ({
     title,
     description,
     count,
-    data
-}: React.PropsWithChildren) => {
+    data,
+    onAddClick
+  }: React.PropsWithChildren<Props>) => {
     const {isOver, setNodeRef, active } = useDroppable({id, data});
 
-    const onClickHandler = () => {
+    const onAddClickHandler = () => {
         onAddClick?.({ id })
-    }
+      }
 
     return (
         <div
@@ -57,7 +58,7 @@ const KanbanColumn = ({
                     <Button
                         shape='circle'
                         icon={<PlusOutlined/>}
-                        onClick={onClickHandler}
+                        onClick={onAddClickHandler}
                     />
                 </Space>
                 {description}

@@ -8,6 +8,7 @@ import { TextIcon } from '../../../components/text-icon'
 import { Button, Card, ConfigProvider, Dropdown, MenuProps, Space, Tag, Tooltip, theme } from 'antd'
 import dayjs from 'dayjs'
 import React, { memo, useMemo }  from 'react'
+import { EyeOutlined, MoreOutlined } from '@ant-design/icons';
 
 type ProjectCardProps = {
     id: string,
@@ -34,6 +35,27 @@ const ProjectCard = ({ id, title, dueDate, users }: ProjectCardProps) => {
         }
       }, [dueDate]);
 
+    const edit = () => {}
+
+    const dropdownItems = useMemo(() => {
+      const dropdownItems: MenuProps['items'] = [
+        {
+          label: 'View card',
+          key: '1',
+          icon: <EyeOutlined />,
+          onClick: () => {
+            edit()
+          }
+        },
+        {
+          danger: true,
+          label: 'Delete card',
+          key: '2',
+          onClick: () => {}
+        }
+      ]
+      return dropdownItems
+    }, []);
     
     return (
         <ConfigProvider
@@ -51,8 +73,29 @@ const ProjectCard = ({ id, title, dueDate, users }: ProjectCardProps) => {
             <Card 
                 size="small"
                 title={<Text ellipsis={{tooltip: title}}>{title}</Text>}
-                onClick={() => edit('tasks', id, 'replace')}
-
+                onClick={() => edit()}
+                extra={
+                  <Dropdown
+                    trigger={["click"]}
+                    menu={{items: dropdownItems}}
+                  >
+                    <Button
+                      type='text'
+                      shape='circle'
+                      icon={
+                        <MoreOutlined 
+                          style={{transform: 'rotate(90deg)'}}
+                        />
+                      }
+                      onPointerDown={(e) => {
+                        e.stopPropagation()
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                      }}
+                    ></Button>
+                  </Dropdown>
+                }
             >
 
             </Card>
