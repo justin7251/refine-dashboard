@@ -1,4 +1,6 @@
 import { GetFieldsFromList } from '@refinedev/nestjs-query';
+
+import { KanbanAddCardButton } from '@/components/tasks/kanban/add-card-button'
 import { KanbanBoardContainer, KanbanBoard } from '../../../components/tasks/kanban/board'
 import KanbanColumn from '../../../components/tasks/kanban/column';
 import KanbanItem from '../../../components/tasks/kanban/item';
@@ -8,6 +10,7 @@ import { DragEndEvent } from '@dnd-kit/core'
 import { useList, useNavigation, useUpdate } from '@refinedev/core';
 import React from 'react';
 import ProjectCard from '../../../components/tasks/kanban/card';
+import { UPDATE_TASK_STAGE_MUTATION } from '@/graphql/mutation';
 
 
 type Task = GetFieldsFromList<TasksQuery>
@@ -24,12 +27,12 @@ export const List = ({ children }: React.PropsWithChildren) => {
         value: ['TODO', 'IN PROGRESS', 'IN REVIEW', 'DONE']
       }
     ],
-    sorters: [
-      {
-        field: 'createAt',
-        order: 'asc',
-      }
-    ],
+    // sorters: [
+    //   {
+    //     field: 'createAt',
+    //     order: 'asc',
+    //   }
+    // ],
     meta: {
       gqlQuery: TASK_STAGES_QUERY
     }
@@ -133,15 +136,15 @@ export const List = ({ children }: React.PropsWithChildren) => {
                 />
               </KanbanItem>
             ))}
-{/* 
+
             {!taskStages.unassignedStage.length && (
               <KanbanAddCardButton 
                 onClick={() => handleAddCard({ stageId: 'unassigned' })}
               />
-            )} */}
+            )}
           </KanbanColumn>
 
-          {/* {taskStages.columns?.map((column) => (
+          {taskStages.columns?.map((column) => (
             <KanbanColumn
               key={column.id}
               id={column.id}
@@ -151,7 +154,7 @@ export const List = ({ children }: React.PropsWithChildren) => {
             >
               {!isLoading && column.tasks.map((task) => (
                 <KanbanItem key={task.id} id={task.id} data={task}>
-                  <ProjectCardMemo 
+                  <ProjectCard 
                     {...task}
                     dueDate={task.dueDate || undefined}
                   />
@@ -163,7 +166,7 @@ export const List = ({ children }: React.PropsWithChildren) => {
               />
               )}
             </KanbanColumn>
-          ))} */}
+          ))}
         </KanbanBoard>
       </KanbanBoardContainer>
       {children}
