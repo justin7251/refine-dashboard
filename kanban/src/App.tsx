@@ -23,7 +23,8 @@ import { Layout } from "./components/layout";
 import { resources } from "./config/resources";
 import { useTranslation } from "react-i18next";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
-
+import TaskCreate from "./pages/tasks/create";
+import TasksEdit from "./pages/tasks/edit";
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -73,7 +74,8 @@ function App() {
                           <Outlet />
                         </List>
                       }>
-
+                        <Route path="new" element={<TaskCreate />} />
+                        <Route path="edit/:id" element={<TasksEdit />} />
                       </Route>
                   </Route>
                 </Routes>
