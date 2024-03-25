@@ -20,6 +20,23 @@ export const authProvider: AuthBindings = {
       },
     };
   },
+  register:  async ({ email, password }) => {
+    if ((email) && password) {
+      localStorage.setItem(TOKEN_KEY, email);
+      return {
+        success: true,
+        redirectTo: "/",
+      };
+    }
+
+    return {
+      success: false,
+      error: {
+        name: "LoginError",
+        message: "Invalid username or password",
+      },
+    };
+  },
   logout: async () => {
     localStorage.removeItem(TOKEN_KEY);
     return {
