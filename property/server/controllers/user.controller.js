@@ -1,4 +1,5 @@
 import User from "../mongodb/models/user.js";
+import bcrypt from 'bcrypt';
 
 const getAllUsers = async (req, res) => {
     try {
@@ -11,17 +12,19 @@ const getAllUsers = async (req, res) => {
 
 const createUser = async (req, res) => {
     try {
-        const { name, email, avatar } = req.body;
+        const { email, password } = req.body;
         const userExists = await User.findOne({ email });
 
-        if (userExists) return res.status(200).json(userExists);
+        if (userExists) return res.status(400).json({ message: "Email already exists" });
 
-        const newUser = await User.create({
-            name,
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const newUser = new User({
             email,
-            avatar,
+            password: hashedPassword
         });
-
+        await  newUser.save();
+        console.log(newUser);
         res.status(200).json(newUser);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -38,6 +41,29 @@ const getUserInfoByID = async (req, res) => {
         } else {
             res.status(404).json({ message: "User not found" });
         }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
+export const loginUser = async (req, res) => {
+    
+    try {
+        const { email, password } = req.body;
+        const user = await User.findOne({ email });
+  
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+  
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+    
+        if (!isPasswordValid) {
+            return res.status(401).json({ message: 'Invalid email or password' });
+        }
+
+        res.status(200).json({ message: 'Login successful', user });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

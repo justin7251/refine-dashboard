@@ -13,22 +13,35 @@ import { PropertyCard, CustomButton } from "../../components";
 
 export const PropertyList: React.FC = () => {
   const navigate = useNavigate();
-  
+
   const {
     tableQueryResult: { data, isLoading, isError },
     current,
     setCurrent,
     setPageSize,
     pageCount,
-    sorter,
-    setSorter,
+    sorters,
+    setSorters,
     filters,
     setFilters,
-} = useTable();
+  } = useTable({
+    sorters: {
+      initial: [
+        {
+          field: "price",
+          order: "desc",
+        },
+      ],
+    },
+  });
 
   const allProperties = data?.data ?? [];
 
-  const currentPrice = sorter.find((item) => item.field === "price")?.order;
+  const currentPrice = sorters.find((item) => item.field === "price")?.order;
+
+  const toggleSort = (field: string) => {
+    setSorters([{ field, order: currentPrice === "asc" ? "desc" : "asc" }]);
+  };
 
   return (
     <Box>
@@ -44,14 +57,14 @@ export const PropertyList: React.FC = () => {
           flexWrap="wrap"
           mb={{ xs: "20px", sm: 0 }}
         >
-          {/* <CustomButton
+          <CustomButton
               title={`Sort price ${
                   currentPrice === "asc" ? "↑" : "↓"
               }`}
-              // handleClick={() => toggleSort("price")}
+              handleClick={() => toggleSort("price")}
               backgroundColor="#475be8"
               color="#fcfcfc"
-          /> */}
+          />
         </Box>
 
         <Stack
