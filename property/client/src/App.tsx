@@ -50,12 +50,6 @@ function App() {
                 routerProvider={routerBindings}
                 authProvider={authProvider}
                 resources={resources}
-                options={{
-                  syncWithLocation: true,
-                  warnWhenUnsavedChanges: true,
-                  useNewQueryKeys: true,
-                  projectId: "aZeZhA-JmpUTt-elaQS1",
-                }}
               >
                 <Routes>
                   <Route
@@ -84,6 +78,10 @@ function App() {
                         <Route
                             path="edit/:id"
                             element={<PropertyEdit />}
+                        />
+                        <Route
+                            path="show/:id"
+                            element={<PropertyDetail />}
                         />
                     </Route>
                     <Route path="*" element={<ErrorComponent />} />

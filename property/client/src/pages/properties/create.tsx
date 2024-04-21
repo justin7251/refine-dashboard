@@ -9,10 +9,9 @@ import { useNavigate } from "react-router-dom";
 
 export const PropertyCreate: React.FC = () => {
     const navigate = useNavigate();
-    const { data: user } = useGetIdentity({
-        v3LegacyAuthProviderCompatible: true,
-    });
-
+    const user_data = localStorage.getItem('user-auth');
+    const user = user_data ? JSON.parse(user_data) : null;
+    
     const [propertyImage, setPropertyImage] = useState({ name: "", url: "" });
     const {
         refineCore: { onFinish, formLoading },
