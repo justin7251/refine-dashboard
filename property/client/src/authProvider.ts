@@ -20,8 +20,9 @@ export const authProvider: AuthBindings = {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
-        localStorage.setItem(TOKEN_KEY, data);
+
+        localStorage.setItem(TOKEN_KEY, JSON.stringify(data.user));
+
         return {
           success: true,
           redirectTo: "/"
@@ -44,7 +45,6 @@ export const authProvider: AuthBindings = {
   },
   register:  async ({ email, password }) => {
     if (email && password) {
-      console.log(JSON.stringify({ email: email, password: password }));
       try {
         const response = await fetch(`${END_POINT}/users`, {
           method: 'POST',
