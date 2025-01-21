@@ -19,6 +19,7 @@ import routerBindings, {
 } from "@refinedev/react-router-v6";
 import dataProvider from "@refinedev/simple-rest";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
+import { useState } from "react";
 import { authProvider } from "./authProvider";
 import { Header } from "./components/header";
 import { ColorModeContextProvider } from "./contexts/color-mode";
@@ -34,8 +35,16 @@ import {
 import { PropertyList, PropertyCreate, PropertyEdit, PropertyDetail } from "./pages/properties";
 
 import { resources } from "./config/resources";
+import { Typography } from "@mui/material";
+import Logo from './assets/logo.svg';
 
 function App() {
+  const [collapsed, setCollapsed] = useState(false); // Use state to manage collapse
+
+  const toggleSidebar = () => {
+    setCollapsed(!collapsed); // Toggle the collapse state
+  };
+
   return (
     <BrowserRouter>
       <RefineKbarProvider>
@@ -58,7 +67,23 @@ function App() {
                         key="authenticated-inner"
                         fallback={<CatchAllNavigate to="/login" />}
                       >
-                        <ThemedLayoutV2 Header={() => <Header sticky />}>
+                        <ThemedLayoutV2
+                          Header={() => <Header sticky={true} />}
+                          Title={() => (
+                            <div
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                padding: '16px',
+                                cursor: 'pointer',
+                              }}
+                              onClick={toggleSidebar}
+                            >
+                              <img src={Logo} alt="Logo" style={{ width: 40, height: 40 }} />
+                              {collapsed ? null : 'Property Insights'}
+                            </div>
+                          )}
+                        >
                           <Outlet />
                         </ThemedLayoutV2>
                       </Authenticated>

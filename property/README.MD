@@ -29,19 +29,20 @@ To get a local copy up and running using Docker, follow these simple steps.
    ```bash
    cd property-agent
    ```
-3. Build and start the containers:
+3. Run the server:
    ```bash
-   docker-compose up --build
+   cd server
+   npm run dev
+   ```
+4. Run the client:
+   ```bash
+   cd client
+   npm run dev
    ```
 
 Now, the application should be running on `http://localhost:3000` for the client and `http://localhost:8080` for the server.
 
 ## Available Scripts
-
-In the project directory, you can run:
-
-- `docker-compose up`: Builds, (re)creates, starts, and attaches to containers for a service.
-- `docker-compose down`: Stops containers and removes containers, networks, volumes, and images created by `up`.
 
 ## Built With
 
@@ -50,7 +51,6 @@ In the project directory, you can run:
 - [Express](https://expressjs.com/) - Fast, unopinionated, minimalist web framework for Node.js.
 - [MongoDB](https://www.mongodb.com/) - Document-based database.
 - [MUI](https://mui.com/) - React UI framework for faster and easier web development.
-- [Docker](https://www.docker.com/) - A set of platform as a service products that use OS-level virtualization to deliver software in packages called containers.
 
 ## Contributing
 
