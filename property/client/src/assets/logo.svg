@@ -1,4 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
-  <rect x="5" y="5" width="40" height="40" rx="8" fill="#2196F3" />
-  <path d="M15 35V15L35 25L15 35Z" fill="white" />
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 200 200">
+  <!-- Background -->
+  <rect width="200" height="200" fill="#f5f5f5"/>
+  
+  <!-- House -->
+  <rect x="60" y="120" width="80" height="50" fill="#8ecae6" stroke="#023047" stroke-width="2"/>
+  <polygon points="50,120 100,80 150,120" fill="#219ebc" stroke="#023047" stroke-width="2"/>
+  <rect x="85" y="140" width="30" height="30" fill="#ffb703" stroke="#023047" stroke-width="2"/>
+  
+  <!-- Agent Body -->
+  <circle cx="100" cy="60" r="20" fill="#ffcb77"/>
+  <rect x="85" y="80" width="30" height="50" fill="#023047"/>
+  
+  <!-- Clipboard -->
+  <rect x="120" y="85" width="15" height="25" fill="#ffb703" stroke="#023047" stroke-width="2"/>
+  <line x1="122" y1="90" x2="132" y2="90" stroke="#023047" stroke-width="1"/>
+  <line x1="122" y1="95" x2="132" y2="95" stroke="#023047" stroke-width="1"/>
+  
+  <!-- Smile -->
+  <path d="M90 65 Q100 75 110 65" stroke="#023047" fill="none" stroke-width="2"/>
+  
+  <!-- Eyes -->
+  <circle cx="93" cy="58" r="2" fill="#023047"/>
+  <circle cx="107" cy="58" r="2" fill="#023047"/>
 </svg>

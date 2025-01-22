@@ -74,13 +74,34 @@ function App() {
                               style={{
                                 display: 'flex',
                                 alignItems: 'center',
+                                justifyContent: 'center',
                                 padding: '16px',
                                 cursor: 'pointer',
+                                width: collapsed ? '80px' : '200px',
+                                transition: 'width 0.3s ease',
                               }}
                               onClick={toggleSidebar}
                             >
-                              <img src={Logo} alt="Logo" style={{ width: 40, height: 40 }} />
-                              {collapsed ? null : 'Property Insights'}
+                              <img 
+                                src={Logo} 
+                                alt="Logo" 
+                                style={{ 
+                                  width: 40, 
+                                  height: 40,
+                                  margin: 'auto'
+                                }} 
+                              />
+                              {!collapsed && (
+                                <span style={{ 
+                                  marginLeft: '10px', 
+                                  whiteSpace: 'nowrap', 
+                                  overflow: 'hidden',
+                                  opacity: collapsed ? 0 : 1,
+                                  transition: 'opacity 0.3s ease'
+                                }}>
+                                  Property Insights
+                                </span>
+                              )}
                             </div>
                           )}
                         >
