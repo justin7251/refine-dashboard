@@ -6,11 +6,14 @@ import {
   ErrorComponent,
   notificationProvider,
   RefineSnackbarProvider,
+  Sider,
   ThemedLayoutV2,
+  ThemedTitleV2
 } from "@refinedev/mui";
 
 import CssBaseline from "@mui/material/CssBaseline";
 import GlobalStyles from "@mui/material/GlobalStyles";
+import ApartmentIcon from '@mui/icons-material/Apartment';
 import routerBindings, {
   CatchAllNavigate,
   DocumentTitleHandler,
@@ -35,15 +38,16 @@ import {
 import { PropertyList, PropertyCreate, PropertyEdit, PropertyDetail } from "./pages/properties";
 
 import { resources } from "./config/resources";
-import { Typography } from "@mui/material";
-import Logo from './assets/logo.svg';
+import { IconButton, Typography } from "@mui/material";
 
 function App() {
-  const [collapsed, setCollapsed] = useState(false); // Use state to manage collapse
+  const [collapsed, setCollapsed] = useState(false);
 
-  const toggleSidebar = () => {
-    setCollapsed(!collapsed); // Toggle the collapse state
+  // Toggle collapsed state
+  const handleCollapseChange = () => {
+    setCollapsed((prevState) => !prevState);
   };
+
 
   return (
     <BrowserRouter>
@@ -68,41 +72,14 @@ function App() {
                         fallback={<CatchAllNavigate to="/login" />}
                       >
                         <ThemedLayoutV2
+
                           Header={() => <Header sticky={true} />}
-                          Title={() => (
-                            <div
-                              style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                padding: '16px',
-                                cursor: 'pointer',
-                                width: collapsed ? '80px' : '200px',
-                                transition: 'width 0.3s ease',
-                              }}
-                              onClick={toggleSidebar}
-                            >
-                              <img 
-                                src={Logo} 
-                                alt="Logo" 
-                                style={{ 
-                                  width: 40, 
-                                  height: 40,
-                                  margin: 'auto'
-                                }} 
-                              />
-                              {!collapsed && (
-                                <span style={{ 
-                                  marginLeft: '10px', 
-                                  whiteSpace: 'nowrap', 
-                                  overflow: 'hidden',
-                                  opacity: collapsed ? 0 : 1,
-                                  transition: 'opacity 0.3s ease'
-                                }}>
-                                  Property Insights
-                                </span>
-                              )}
-                            </div>
+                          Title={({ collapsed }) => (
+                            <ThemedTitleV2
+                              collapsed={collapsed}
+                              icon={<ApartmentIcon />}
+                              text="Property Insights"
+                            />
                           )}
                         >
                           <Outlet />
