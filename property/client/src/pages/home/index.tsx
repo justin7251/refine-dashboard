@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import { Typography, Box, Stack } from '@mui/material'
 
 import {
@@ -6,8 +7,24 @@ import {
   TotalRevenue,
   PropertyCard,
 } from "../../components";
+import { fetchLastYearPropertyData } from '../../utils/propertyDataFetcher';
 
-export const Home = () => {
+export const Home: React.FC = () => {
+  const [propertyData, setPropertyData] = useState([]);
+
+  useEffect(() => {
+    const loadPropertyData = async () => {
+      try {
+        const data = await fetchLastYearPropertyData();
+        setPropertyData(data);
+      } catch (error) {
+        console.error('Error loading property data', error);
+      }
+    };
+
+    loadPropertyData();
+  }, []);
+
   return (
     <Box>
       <Typography fontSize={25} fontWeight={700} color="#11142D">
