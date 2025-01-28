@@ -28,12 +28,7 @@ export const Home: React.FC = () => {
       priceChange: number;
       rentChange: number;
     }>;
-    topRegionsAverage: {
-      name: string;
-      averageSalePrice: number;
-      averageRent: number;
-      averagePriceChange: string;
-    };
+
     lastUpdated: string;
   } | null>(null);
 
@@ -85,13 +80,10 @@ export const Home: React.FC = () => {
           >
             🇬🇧 UK Property Market Update
           </Typography>
-          {/* Top 5 Regions */}
-          <Typography variant="h6" sx={{ mb: 2, color: '#4A5568' }}>
-            Top 5 Performing Regions
-          </Typography>
+          {/* Top 6 Regions */}
           <Grid container spacing={2}>
             {marketUpdates.topRegions?.map((region, index) => (
-              <Grid item xs={12} key={region.name}>
+              <Grid item xs={4} key={region.name}>
                 <Paper 
                   sx={{ 
                     p: 2.5,
@@ -155,11 +147,6 @@ export const Home: React.FC = () => {
               </Grid>
             ))}
           </Grid>
-
-         {/* Top Regions Averages */}
-        
-
-
           <Typography 
             variant="caption" 
             display="block" 

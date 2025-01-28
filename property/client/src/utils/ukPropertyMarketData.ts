@@ -41,7 +41,7 @@ const executeSPARQLQuery = async (query: string) => {
 
 const fetchTopRegionsData = async (): Promise<RegionData[]> => {
   try {
-    const limit = 5; // Configurable parameter
+    const limit = 6; // Configurable parameter
     const query = `
       PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
       PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -126,65 +126,26 @@ const fetchTopRegionsData = async (): Promise<RegionData[]> => {
       { name: 'Birmingham', averageSalePrice: 220000, averageRent: 1000, priceChange: 2.8, rentChange: 0.3 },
       { name: 'Edinburgh', averageSalePrice: 300000, averageRent: 1400, priceChange: 2.1, rentChange: 0.2 },
       { name: 'Bristol', averageSalePrice: 330000, averageRent: 1300, priceChange: 2.9, rentChange: 0.4 },
+      { name: 'Nottingham', averageSalePrice: 240000, averageRent: 900, priceChange: 2.2, rentChange: -0.3 }
     ];
   }
 };
 
-const gettopRegionsAverages = async () => {
-  const query = `
-    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    PREFIX ukhpi: <http://landregistry.data.gov.uk/def/ukhpi/>
-    
-    SELECT 
-      (ROUND(AVG(?price)) as ?averagePrice) 
-      (ROUND(AVG(?monthlyRent)) as ?averageRent)
-      (AVG(?percentageChange) as ?priceChange)
-    WHERE {
-      ?record ukhpi:averagePrice ?price ;
-              ukhpi:monthlyRent ?monthlyRent ;
-              ukhpi:percentageAnnualChange ?percentageChange .
-      FILTER(?price > 0)
-      FILTER(?monthlyRent > 0)
-      
-      # Get only the latest data
-      {
-        SELECT (MAX(?date) as ?latestDate)
-        WHERE {
-          ?record ukhpi:refMonth ?date
-        }
-      }
-    }
-  `;
-
-  const result = await executeSPARQLQuery(query);
-  return result?.results?.bindings?.[0] || {};
-};
 
 export const fetchUKPropertyMarketUpdates = async (): Promise<MarketUpdateData> => {
   try {
-    const [topRegions, nationalData] = await Promise.all([
-      fetchTopRegionsData(),
-      gettopRegionsAverages()
+    const [topRegions] = await Promise.all([
+      fetchTopRegionsData()
     ]);
 
     return {
       topRegions,
-      nationalAverages: {
-        averageSalePrice: parseInt(nationalData.averagePrice?.value || '300000'),
-        averageRent: parseInt(nationalData.averageRent?.value || '1200'),
-        averagePriceChange: parseFloat(nationalData.priceChange?.value || '1.2').toFixed(1)
-      },
       lastUpdated: new Date().toLocaleDateString()
     };
   } catch (error) {
     console.error('Failed to fetch UK property market data:', error);
     return {
       topRegions: [],
-      nationalAverages: {
-        averageSalePrice: 300000,
-        averageRent: 1200,
-        averagePriceChange: '1.2'
-      },
       lastUpdated: new Date().toLocaleDateString()
     };
   }
