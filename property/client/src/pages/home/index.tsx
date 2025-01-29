@@ -50,40 +50,51 @@ export const Home: React.FC = () => {
 
   return (
     <Box>
-      <Typography fontSize={25} fontWeight={700} color="#11142D">
-        Dashboard
-      </Typography>
-
       {/* UK Property Market Updates */}
       {marketUpdates && (
         <Paper 
           elevation={3} 
           sx={{ 
-            mt: 4, 
             p: 3,
             background: 'linear-gradient(135deg, #ffffff 0%, #f4f6f8 100%)',
             borderRadius: '16px',
             transition: 'all 0.3s ease-in-out',
           }}
         >
-          <Typography 
-            variant="h5" 
-            gutterBottom 
-            sx={{ 
-              fontWeight: 600,
-              color: '#2D3748',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1,
-              mb: 3
-            }}
+          <Box 
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-end',
+            mb: 2,
+          }}
           >
-            🇬🇧 UK Property Market Update
+            <Typography 
+              variant="h5" 
+              sx={{ 
+                fontWeight: 600,
+                color: '#2D3748',
+              }}
+            >
+              🇬🇧 UK Property Market Update
+            </Typography>
+
+            <Typography 
+              variant="caption" 
+              sx={{ 
+                color: '#718096',
+                position: 'relative',
+                top: '10px',
+                right: '10px',
+              }}
+            >
+            Last Updated: {marketUpdates.lastUpdated}
           </Typography>
+          </Box>
           {/* Top 6 Regions */}
           <Grid container spacing={2}>
             {marketUpdates.topRegions?.map((region, index) => (
-              <Grid item xs={4} key={region.name}>
+              <Grid item xs={12} md={4} key={region.name}>
                 <Paper 
                   sx={{ 
                     p: 2.5,
@@ -91,7 +102,7 @@ export const Home: React.FC = () => {
                     borderLeft: '4px solid',
                     borderLeftColor: index === 0 ? 'primary.main' : 'grey.300',
                     '&:hover': {
-                      boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                      boxShadow: '0 4px 2px rgba(0,0,0,0.1)',
                       transform: 'translateY(-2px)',
                       transition: 'all 0.3s ease'
                     }
@@ -100,7 +111,7 @@ export const Home: React.FC = () => {
                   <Grid container spacing={2} alignItems="center">
                     <Grid item xs={12} md={4}>
                       <Stack direction="row" alignItems="center" spacing={1}>
-                        <Typography variant="h6" color="primary" sx={{ minWidth: '24px' }}>
+                        <Typography variant="h6" color="primary" sx={{ minWidth: '20px' }}>
                           #{index + 1}
                         </Typography>
                         <Typography variant="h6">
@@ -147,17 +158,6 @@ export const Home: React.FC = () => {
               </Grid>
             ))}
           </Grid>
-          <Typography 
-            variant="caption" 
-            display="block" 
-            sx={{ 
-              mt: 2,
-              color: '#718096',
-              textAlign: 'right'
-            }}
-          >
-            Last Updated: {marketUpdates.lastUpdated}
-          </Typography>
         </Paper>
       )}
 

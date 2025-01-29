@@ -10,11 +10,6 @@ interface RegionData {
 
 interface MarketUpdateData {
   topRegions: RegionData[];
-  nationalAverages: {
-    averageSalePrice: number;
-    averageRent: number;
-    averagePriceChange: string;
-  };
   lastUpdated: string;
 }
 
@@ -121,7 +116,7 @@ const fetchTopRegionsData = async (): Promise<RegionData[]> => {
 
     // Comprehensive fallback data
     return [
-      { name: 'Greater London', averageSalePrice: 650000, averageRent: 2500, priceChange: 2.5, rentChange: -0.5 },
+      { name: 'London', averageSalePrice: 650000, averageRent: 2500, priceChange: 2.5, rentChange: -0.5 },
       { name: 'Manchester', averageSalePrice: 250000, averageRent: 1200, priceChange: 3.2, rentChange: 0.5 },
       { name: 'Birmingham', averageSalePrice: 220000, averageRent: 1000, priceChange: 2.8, rentChange: 0.3 },
       { name: 'Edinburgh', averageSalePrice: 300000, averageRent: 1400, priceChange: 2.1, rentChange: 0.2 },
@@ -150,14 +145,3 @@ export const fetchUKPropertyMarketUpdates = async (): Promise<MarketUpdateData> 
     };
   }
 };
-
-// Optional: Function to get data for a specific region
-export const fetchRegionData = async (regionName: string): Promise<RegionData | null> => {
-  try {
-    const allRegions = await fetchTopRegionsData();
-    return allRegions.find(region => region.name === regionName) || null;
-  } catch (error) {
-    console.error(`Failed to fetch data for region ${regionName}:`, error);
-    return null;
-  }
-}; 
