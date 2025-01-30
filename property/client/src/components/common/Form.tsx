@@ -112,25 +112,113 @@ const Form = ({
                     <MenuItem value="chalet">Chalet</MenuItem>
                 </Select>
             </FormControl>
-            <FormControl>
+            <FormControl sx={{ flex: 1 }}>
               <FormHelperText
-                  sx={{
-                      fontWeight: 500,
-                      margin: "10px 0",
-                      fontSize: 16,
-                      color: "#11142d",
-                  }}
+                sx={{
+                  fontWeight: 500,
+                  margin: "10px 0",
+                  fontSize: 16,
+                  color: "#11142d",
+                }}
               >
-                  Enter property price
+                Square Footage
               </FormHelperText>
               <TextField
-                  fullWidth
-                  required
-                  id="outlined-basic"
-                  color="info"
-                  type="number"
-                  variant="outlined"
-                  {...register("price", { required: true })}
+                fullWidth
+                required
+                id="sqft"
+                color="info"
+                type="number"
+                variant="outlined"
+                {...register("squareFootage", { required: true })}
+              />
+            </FormControl>
+          </Stack>
+          <Stack direction="row" gap={4}>
+            <FormControl sx={{ flex: 1 }}>
+              <FormHelperText
+                sx={{
+                  fontWeight: 500,
+                  margin: "10px 0",
+                  fontSize: 16,
+                  color: "#11142d",
+                }}
+              >
+                Number of Bedrooms
+              </FormHelperText>
+              <TextField
+                fullWidth
+                required
+                id="bedrooms"
+                color="info"
+                type="number"
+                variant="outlined"
+                {...register("bedrooms", { required: true })}
+              />
+            </FormControl>
+            <FormControl sx={{ flex: 1 }}>
+              <FormHelperText
+                sx={{
+                  fontWeight: 500,
+                  margin: "10px 0",
+                  fontSize: 16,
+                  color: "#11142d",
+                }}
+              >
+                Number of Bathrooms
+              </FormHelperText>
+              <TextField
+                fullWidth
+                required
+                id="bathrooms"
+                color="info"
+                type="number"
+                variant="outlined"
+                {...register("bathrooms", { required: true })}
+              />
+            </FormControl>
+          </Stack>
+          <Stack direction="row" gap={4}>
+            <FormControl sx={{ flex: 1 }}>
+              <FormHelperText
+                sx={{
+                  fontWeight: 500,
+                  margin: "10px 0",
+                  fontSize: 16,
+                  color: "#11142d",
+                }}
+              >
+                Enter property price
+              </FormHelperText>
+              <TextField
+                fullWidth
+                required
+                id="outlined-basic"
+                color="info"
+                type="number"
+                variant="outlined"
+                {...register("price", { required: true })}
+              />
+            </FormControl>
+            <FormControl sx={{ flex: 1 }}>
+              <FormHelperText
+                sx={{
+                  fontWeight: 500,
+                  margin: "10px 0",
+                  fontSize: 16,
+                  color: "#11142d",
+                }}
+              >
+                Number of Parking Spaces
+              </FormHelperText>
+              <TextField
+                fullWidth
+                required
+                id="parking"
+                color="info"
+                type="number"
+                variant="outlined"
+                {...register("parkingSpaces", { required: true })}
               />
             </FormControl>
           </Stack>

@@ -50,16 +50,6 @@ export const PropertyEdit: React.FC = () => {
         });
     };
 
-    // useEffect(() => {
-    //     if (!imageSet && queryResult?.data?.data?.photo) {
-    //         setPropertyImage({
-    //             name: "Photo", // You can set any default name here or use the actual image name if available
-    //             url: queryResult.data.data.photo
-    //         });
-    //         setImageSet(true);
-    //     }
-    // }, [queryResult, imageSet]);
-
     return (
         <Form
             type="Edit"

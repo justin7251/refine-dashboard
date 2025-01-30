@@ -69,10 +69,15 @@ const createProperty = async (req, res) => {
             title,
             description,
             propertyType,
+            squareFootage,
+            bedrooms,
+            bathrooms,
+            parking,
             location,
             price,
             photo,
             email,
+
         } = req.body;
 
         const session = await mongoose.startSession();
@@ -88,10 +93,15 @@ const createProperty = async (req, res) => {
             title,
             description,
             propertyType,
+            squareFootage,
+            bedrooms,
+            bathrooms,
+            parking,
             location,
             price,
             photo: photoUrl.url,
             creator: user._id,
+
         });
 
         user.allProperties.push(newProperty._id);
@@ -119,9 +129,14 @@ const updateProperty = async (req, res) => {
                 title,
                 description,
                 propertyType,
+                squareFootage,
+                bedrooms,
+                bathrooms,
+                parking,
                 location,
                 price,
                 photo: photoUrl.url || photo,
+
             },
         );
 
