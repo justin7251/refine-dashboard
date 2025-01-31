@@ -133,7 +133,10 @@ export const PropertyDetail: React.FC = () => {
                                     <Stack alignItems="center" spacing={1}>
                                         <KingBedOutlined color="action" />
                                         <Typography variant="body2" color="text.secondary">
-                                            3 Bedrooms
+                                            Bedrooms
+                                        </Typography>
+                                        <Typography variant="subtitle1">
+                                            {propertyDetails.bedrooms || 'N/A'}
                                         </Typography>
                                     </Stack>
                                 </Grid>
@@ -141,7 +144,10 @@ export const PropertyDetail: React.FC = () => {
                                     <Stack alignItems="center" spacing={1}>
                                         <BathtubOutlined color="action" />
                                         <Typography variant="body2" color="text.secondary">
-                                            2 Bathrooms
+                                            Bathrooms
+                                        </Typography>
+                                        <Typography variant="subtitle1">
+                                            {propertyDetails.bathrooms || 'N/A'}
                                         </Typography>
                                     </Stack>
                                 </Grid>
@@ -149,7 +155,13 @@ export const PropertyDetail: React.FC = () => {
                                     <Stack alignItems="center" spacing={1}>
                                         <SquareFootOutlined color="action" />
                                         <Typography variant="body2" color="text.secondary">
-                                            1,200 sqft
+                                            Square Footage
+                                        </Typography>
+                                        <Typography variant="subtitle1">
+                                            {propertyDetails.squareFootage ? 
+                                                `${propertyDetails.squareFootage.toLocaleString()} sqft` : 
+                                                'N/A'
+                                            }
                                         </Typography>
                                     </Stack>
                                 </Grid>
@@ -157,7 +169,10 @@ export const PropertyDetail: React.FC = () => {
                                     <Stack alignItems="center" spacing={1}>
                                         <LocalParking color="action" />
                                         <Typography variant="body2" color="text.secondary">
-                                            2 Parking
+                                            Parking Spaces
+                                        </Typography>
+                                        <Typography variant="subtitle1">
+                                            {propertyDetails.parkingSpaces || 'N/A'}
                                         </Typography>
                                     </Stack>
                                 </Grid>
