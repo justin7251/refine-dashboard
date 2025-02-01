@@ -118,27 +118,24 @@ const createProperty = async (req, res) => {
 const updateProperty = async (req, res) => {
     try {
         const { id } = req.params;
-        const { title, description, propertyType, location, price, photo } =
-            req.body;
+        const { photo, ...updateData } = req.body; // Extract `photo` separately
 
-        const photoUrl = await cloudinary.uploader.upload(photo);
+        // Upload new photo if provided
+        if (photo) {
+            const photoUrl = await cloudinary.uploader.upload(photo);
+            updateData.photo = photoUrl.url; // Add updated photo URL
+        }
 
-        await Property.findByIdAndUpdate(
-            { _id: id },
-            {
-                title,
-                description,
-                propertyType,
-                squareFootage,
-                bedrooms,
-                bathrooms,
-                parking,
-                location,
-                price,
-                photo: photoUrl.url || photo,
-
-            },
+        // Update property
+        const updatedProperty = await Property.findByIdAndUpdate(
+            id,
+            updateData,
+            { new: true, runValidators: true } // Return updated doc & validate data
         );
+
+        if (!updatedProperty) {
+            return res.status(404).json({ message: "Property not found" });
+        }
 
         res.status(200).json({ message: "Property updated successfully" });
     } catch (error) {

@@ -218,7 +218,7 @@ const Form = ({
                 color="info"
                 type="number"
                 variant="outlined"
-                {...register("parkingSpaces", { required: true })}
+                {...register("parking", { required: true })}
               />
             </FormControl>
           </Stack>
