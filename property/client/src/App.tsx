@@ -36,6 +36,7 @@ import {
 } from "./pages";
 
 import { PropertyList, PropertyCreate, PropertyEdit, PropertyDetail } from "./pages/properties";
+import { BookingsList } from "./pages/bookings/list";
 
 import { resources } from "./config/resources";
 import { IconButton, Typography } from "@mui/material";
@@ -107,6 +108,7 @@ function App() {
                             element={<PropertyDetail />}
                         />
                     </Route>
+                    <Route path="bookings" element={<BookingsList />} />
                     <Route path="*" element={<ErrorComponent />} />
                   </Route>
                   <Route

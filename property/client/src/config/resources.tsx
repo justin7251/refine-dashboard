@@ -4,7 +4,8 @@ import {
     PeopleAltOutlined,
     StarOutlineRounded,
     VillaOutlined,
-    DashboardOutlined
+    DashboardOutlined,
+    CalendarToday
   } from '@mui/icons-material';
 
 import { IResourceItem } from "@refinedev/core";
@@ -57,5 +58,10 @@ export const resources: IResourceItem[] = [
       meta: {
         canDelete: true,
       },
+    },
+    {
+        name: "bookings",
+        list: "/bookings",
+        icon: <CalendarToday />,
     },
   ]
