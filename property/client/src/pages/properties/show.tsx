@@ -10,7 +10,12 @@ import {
   Divider,
   Avatar,
   Button,
-  Rating
+  Rating,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField
 } from "@mui/material";
 import {
   Place,
@@ -25,6 +30,7 @@ import {
   LocalParking,
   Verified
 } from "@mui/icons-material";
+import { useState } from 'react';
 
 import { CustomButton } from "../../components";
 
@@ -42,8 +48,13 @@ export const PropertyDetail: React.FC = () => {
     const { id } = useParams();
     const { queryResult } = useShow({ resource: 'properties', id: id });
     const { data, isLoading, isError } = queryResult;
-    const propertyDetails = data?.data ?? {};
-    const isCurrentUser = user?.email === propertyDetails.creator?.[0]?.email;
+    const propertyDetails  = data?.data || null;
+    const isCurrentUser = user?.email === propertyDetails?.creator?.[0]?.email;
+    const [openBookingDialog, setOpenBookingDialog] = useState(false);
+    const [bookingDates, setBookingDates] = useState({
+        startDate: '',
+        endDate: ''
+    });
 
     if (isLoading) return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
@@ -67,6 +78,46 @@ export const PropertyDetail: React.FC = () => {
         }
     };
 
+    const handleBookingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setBookingDates(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const handleBookProperty = async () => {
+        try {
+            const user = JSON.parse(localStorage.getItem('user-auth') || '{}');
+  
+            const response = await fetch('http://localhost:8080/api/v1/bookings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    propertyId: propertyDetails?._id,
+                    email: user.email,
+                    ...bookingDates
+                })
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                // Show success message
+                alert('Property booked successfully!');
+                setOpenBookingDialog(false);
+            } else {
+                // Show error message
+                alert(result.message || 'Booking failed');
+            }
+        } catch (error) {
+            console.error('Booking error:', error);
+            alert('An error occurred while booking');
+        }
+    };
+
     return (
         <Box sx={{ p: { xs: 2, md: 3 }, maxWidth: 1200, margin: '0 auto' }}>
             <Paper elevation={0} sx={{ 
@@ -81,8 +132,8 @@ export const PropertyDetail: React.FC = () => {
                   width: '100%'
                 }}>
                     <img
-                        src={propertyDetails.photo}
-                        alt={propertyDetails.title}
+                        src={propertyDetails?.photo}
+                        alt={propertyDetails?.title}
                         style={{
                             width: '100%',
                             height: '100%',
@@ -99,11 +150,11 @@ export const PropertyDetail: React.FC = () => {
                       color: '#fff'
                     }}>
                         <Typography variant="h4" fontWeight="bold">
-                            {propertyDetails.title}
+                            {propertyDetails?.title}
                         </Typography>
                         <Stack direction="row" spacing={1} alignItems="center" mt={1}>
                             <Place />
-                            <Typography>{propertyDetails.location}</Typography>
+                            <Typography>{propertyDetails?.location}</Typography>
                         </Stack>
                     </Box>
                 </Box>
@@ -116,14 +167,14 @@ export const PropertyDetail: React.FC = () => {
                             <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
                                 <Chip 
                                   icon={<HomeIcon />} 
-                                  label={propertyDetails.propertyType} 
+                                  label={propertyDetails?.propertyType} 
                                   color="primary" 
                                   variant="outlined" 
                                 />
                                 <Typography variant="h5" color="primary" fontWeight="bold">
-                                    ${propertyDetails.price}
+                                    ${propertyDetails?.price}
                                     <Typography component="span" variant="body2" color="text.secondary">
-                                        /day
+                                        / Month
                                     </Typography>
                                 </Typography>
                             </Stack>
@@ -136,7 +187,7 @@ export const PropertyDetail: React.FC = () => {
                                             Bedrooms
                                         </Typography>
                                         <Typography variant="subtitle1">
-                                            {propertyDetails.bedrooms || 'N/A'}
+                                            {propertyDetails?.bedrooms || 'N/A'}
                                         </Typography>
                                     </Stack>
                                 </Grid>
@@ -147,7 +198,7 @@ export const PropertyDetail: React.FC = () => {
                                             Bathrooms
                                         </Typography>
                                         <Typography variant="subtitle1">
-                                            {propertyDetails.bathrooms || 'N/A'}
+                                            {propertyDetails?.bathrooms || 'N/A'}
                                         </Typography>
                                     </Stack>
                                 </Grid>
@@ -158,8 +209,8 @@ export const PropertyDetail: React.FC = () => {
                                             Square Footage
                                         </Typography>
                                         <Typography variant="subtitle1">
-                                            {propertyDetails.squareFootage ? 
-                                                `${propertyDetails.squareFootage.toLocaleString()} sqft` : 
+                                            {propertyDetails?.squareFootage ? 
+                                                `${propertyDetails?.squareFootage.toLocaleString()} sqft` : 
                                                 'N/A'
                                             }
                                         </Typography>
@@ -172,7 +223,7 @@ export const PropertyDetail: React.FC = () => {
                                             Parking Spaces
                                         </Typography>
                                         <Typography variant="subtitle1">
-                                            {propertyDetails.parkingSpaces || 'N/A'}
+                                            {propertyDetails?.parking || 'N/A'}
                                         </Typography>
                                     </Stack>
                                 </Grid>
@@ -182,7 +233,7 @@ export const PropertyDetail: React.FC = () => {
 
                             <Typography variant="h6" gutterBottom>Description</Typography>
                             <Typography color="text.secondary" paragraph>
-                                {propertyDetails.description}
+                                {propertyDetails?.description}
                             </Typography>
                         </Paper>
                     </Grid>
@@ -193,12 +244,12 @@ export const PropertyDetail: React.FC = () => {
                         <Paper elevation={0} sx={{ p: 3, borderRadius: '12px', border: '1px solid #eee' }}>
                             <Stack alignItems="center" spacing={2}>
                                 <Avatar
-                                    src={propertyDetails.creator?.[0]?.avatar}
+                                    src={propertyDetails?.creator?.[0]?.avatar}
                                     sx={{ width: 80, height: 80 }}
                                 />
                                 <Stack alignItems="center" spacing={1}>
                                     <Typography variant="h6">
-                                        {propertyDetails.creator?.[0]?.name}
+                                        {propertyDetails?.creator?.[0]?.name}
                                         <Verified sx={{ ml: 1, color: 'primary.main', width: 20 }} />
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary">
@@ -212,7 +263,7 @@ export const PropertyDetail: React.FC = () => {
                                         variant="contained"
                                         fullWidth
                                         startIcon={!isCurrentUser ? <ChatBubble /> : <Edit />}
-                                        onClick={() => isCurrentUser && navigate(`/properties/edit/${propertyDetails._id}`)}
+                                        onClick={() => isCurrentUser && navigate(`/properties/edit/${propertyDetails?._id}`)}
                                     >
                                         {!isCurrentUser ? "Message" : "Edit"}
                                     </Button>
@@ -252,12 +303,59 @@ export const PropertyDetail: React.FC = () => {
                             size="large"
                             fullWidth
                             sx={{ mt: 3, py: 1.5 }}
+                            onClick={() => setOpenBookingDialog(true)}
                         >
                             Book Now
                         </Button>
                     </Grid>
                 </Grid>
             </Paper>
+
+            {/* Booking Dialog */}
+            <Dialog 
+                open={openBookingDialog} 
+                onClose={() => setOpenBookingDialog(false)}
+            >
+                <DialogTitle>Book Property</DialogTitle>
+                <DialogContent>
+                    <input type="hidden" name="propertyId" value={propertyDetails?._id} />
+                    <Typography variant="body1" gutterBottom>
+                        Book {propertyDetails?.title}
+                    </Typography>
+                    <TextField
+                        name="startDate"
+                        label="Start Date"
+                        type="date"
+                        fullWidth
+                        margin="normal"
+                        InputLabelProps={{ shrink: true }}
+                        value={bookingDates.startDate}
+                        onChange={handleBookingChange}
+                    />
+                    <TextField
+                        name="endDate"
+                        label="End Date"
+                        type="date"
+                        fullWidth
+                        margin="normal"
+                        InputLabelProps={{ shrink: true }}
+                        value={bookingDates.endDate}
+                        onChange={handleBookingChange}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpenBookingDialog(false)}>
+                        Cancel
+                    </Button>
+                    <Button 
+                        onClick={handleBookProperty} 
+                        color="primary" 
+                        variant="contained"
+                    >
+                        Confirm Booking
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 };

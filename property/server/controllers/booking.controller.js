@@ -42,9 +42,11 @@ export const createBooking = async (req, res) => {
             booking: newBooking 
         });
     } catch (error) {
+        console.error("Booking creation error:", error);
         res.status(500).json({ 
             message: "Error creating booking", 
-            error: error.message 
+            error: error.message,
+            stack: error.stack
         });
     }
 };
