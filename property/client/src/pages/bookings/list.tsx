@@ -8,7 +8,8 @@ import {
     TableCell, 
     TableContainer, 
     TableHead, 
-    TableRow 
+    TableRow,
+    Button
 } from '@mui/material';
 
 export const BookingsList = () => {
@@ -38,6 +39,42 @@ export const BookingsList = () => {
         fetchBookings();
     }, []);
 
+    const handleConfirm = async (id: string) => {
+        const response = await fetch(`http://localhost:8080/api/v1/bookings/${id}/confirm`, {
+            method: 'PUT',
+            headers: {
+
+                'Content-Type': 'application/json'
+
+            }
+        });
+        if (response.ok) {
+            console.log('Booking confirmed');    
+        } else {
+            console.error('Failed to confirm booking');
+        }
+
+    }
+
+
+
+    const handleCancel = async (id: string) => {
+        const response = await fetch(`http://localhost:8080/api/v1/bookings/${id}/cancel`, {
+            method: 'PUT',
+            headers: {
+
+                'Content-Type': 'application/json'
+            }
+        });
+        if (response.ok) {
+            console.log('Booking cancelled');
+        } else {
+            console.error('Failed to cancel booking');
+        }
+    }
+
+
+
     if (loading) return <Typography>Loading bookings...</Typography>;
 
     return (
@@ -53,9 +90,13 @@ export const BookingsList = () => {
                             <TableCell>Start Date</TableCell>
                             <TableCell>End Date</TableCell>
                             <TableCell>Status</TableCell>
+                            <TableCell>Confirm</TableCell>
+                            <TableCell>Cancel</TableCell>
                         </TableRow>
+
                     </TableHead>
                     <TableBody>
+
                         {bookings.map((booking) => (
                             <TableRow key={booking._id}>
                                 <TableCell>{booking.property.title}</TableCell>
@@ -66,9 +107,31 @@ export const BookingsList = () => {
                                     {new Date(booking.endDate).toLocaleDateString()}
                                 </TableCell>
                                 <TableCell>{booking.status}</TableCell>
+                                
+                                <TableCell>
+                                    <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={() => handleConfirm(booking._id)}
+                                    >
+                                    Confirm
+                                    </Button>
+
+                                </TableCell>
+                                <TableCell>
+                                    <Button
+                                    variant="contained"
+                                    color="error"
+                                    onClick={() => handleCancel(booking._id)}
+                                    >
+                                    Cancel
+                                    </Button>
+
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
+
                 </Table>
             </TableContainer>
         </Box>

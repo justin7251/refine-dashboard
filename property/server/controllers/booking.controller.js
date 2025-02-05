@@ -73,4 +73,21 @@ export const getUserBookings = async (req, res) => {
             error: error.message 
         });
     }
-}; 
+};
+
+export const confirmBooking = async (req, res) => {
+    const { id } = req.params;
+    const booking = await Booking.findById(id);
+    booking.status = 'confirmed';
+    await booking.save();
+    res.status(200).json({ message: "Booking confirmed" });
+};
+
+export const cancelBooking = async (req, res) => {
+    const { id } = req.params;
+    const booking = await Booking.findById(id);
+    booking.status = 'cancelled';
+    await booking.save();
+    res.status(200).json({ message: "Booking cancelled" });
+};
+
