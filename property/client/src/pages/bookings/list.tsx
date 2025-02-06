@@ -43,37 +43,43 @@ export const BookingsList = () => {
         const response = await fetch(`http://localhost:8080/api/v1/bookings/${id}/confirm`, {
             method: 'PUT',
             headers: {
-
                 'Content-Type': 'application/json'
-
             }
         });
         if (response.ok) {
-            console.log('Booking confirmed');    
+            // Update local state to reflect the change
+            setBookings(prevBookings => 
+                prevBookings.map(booking => 
+                    booking._id === id 
+                        ? { ...booking, status: 'confirmed' } 
+                        : booking
+                )
+            );
         } else {
             console.error('Failed to confirm booking');
         }
-
     }
-
-
 
     const handleCancel = async (id: string) => {
         const response = await fetch(`http://localhost:8080/api/v1/bookings/${id}/cancel`, {
             method: 'PUT',
             headers: {
-
                 'Content-Type': 'application/json'
             }
         });
         if (response.ok) {
-            console.log('Booking cancelled');
+            // Update local state to reflect the change
+            setBookings(prevBookings => 
+                prevBookings.map(booking => 
+                    booking._id === id 
+                        ? { ...booking, status: 'cancelled' } 
+                        : booking
+                )
+            );
         } else {
             console.error('Failed to cancel booking');
         }
     }
-
-
 
     if (loading) return <Typography>Loading bookings...</Typography>;
 
@@ -90,13 +96,10 @@ export const BookingsList = () => {
                             <TableCell>Start Date</TableCell>
                             <TableCell>End Date</TableCell>
                             <TableCell>Status</TableCell>
-                            <TableCell>Confirm</TableCell>
-                            <TableCell>Cancel</TableCell>
+                            <TableCell>Actions</TableCell>
                         </TableRow>
-
                     </TableHead>
                     <TableBody>
-
                         {bookings.map((booking) => (
                             <TableRow key={booking._id}>
                                 <TableCell>{booking.property.title}</TableCell>
@@ -107,31 +110,36 @@ export const BookingsList = () => {
                                     {new Date(booking.endDate).toLocaleDateString()}
                                 </TableCell>
                                 <TableCell>{booking.status}</TableCell>
-                                
                                 <TableCell>
-                                    <Button
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={() => handleConfirm(booking._id)}
-                                    >
-                                    Confirm
-                                    </Button>
-
-                                </TableCell>
-                                <TableCell>
-                                    <Button
-                                    variant="contained"
-                                    color="error"
-                                    onClick={() => handleCancel(booking._id)}
-                                    >
-                                    Cancel
-                                    </Button>
-
+                                    {booking.status === 'pending' && (
+                                        <>
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                sx={{ mr: 1, mb: 1 }}
+                                                onClick={() => handleConfirm(booking._id)}
+                                            >
+                                                Confirm
+                                            </Button>
+                                            <Button
+                                                variant="contained"
+                                                color="error"
+                                                onClick={() => handleCancel(booking._id)}
+                                            >
+                                                Cancel
+                                            </Button>
+                                        </>
+                                    )}
+                                    {booking.status === 'confirmed' && (
+                                        <Typography color="primary">Confirmed</Typography>
+                                    )}
+                                    {booking.status === 'cancelled' && (
+                                        <Typography color="error">Cancelled</Typography>
+                                    )}
                                 </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
-
                 </Table>
             </TableContainer>
         </Box>
