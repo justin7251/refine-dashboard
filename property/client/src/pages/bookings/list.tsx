@@ -12,8 +12,16 @@ import {
     Button
 } from '@mui/material';
 
+interface Booking {
+    _id: string;
+    property: { title: string };
+    startDate: string;
+    endDate: string;
+    status: 'pending' | 'confirmed' | 'cancelled';
+}
+
 export const BookingsList = () => {
-    const [bookings, setBookings] = useState([]);
+    const [bookings, setBookings] = useState<Booking[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
