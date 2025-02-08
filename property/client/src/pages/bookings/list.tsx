@@ -119,31 +119,30 @@ export const BookingsList = () => {
                                 </TableCell>
                                 <TableCell>{booking.status}</TableCell>
                                 <TableCell>
-                                    {booking.status === 'pending' && (
-                                        <>
-                                            <Button
-                                                variant="contained"
-                                                color="primary"
-                                                sx={{ mr: 1, mb: 1 }}
-                                                onClick={() => handleConfirm(booking._id)}
-                                            >
-                                                Confirm
-                                            </Button>
-                                            <Button
-                                                variant="contained"
-                                                color="error"
-                                                onClick={() => handleCancel(booking._id)}
-                                            >
-                                                Cancel
-                                            </Button>
-                                        </>
-                                    )}
-                                    {booking.status === 'confirmed' && (
-                                        <Typography color="primary">Confirmed</Typography>
-                                    )}
-                                    {booking.status === 'cancelled' && (
-                                        <Typography color="error">Cancelled</Typography>
-                                    )}
+                                {booking.status === 'pending' && (
+                                    <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={() => handleConfirm(booking._id)}
+                                        >
+                                            Confirm
+                                        </Button>
+                                        <Button
+                                            variant="contained"
+                                            color="error"
+                                            onClick={() => handleCancel(booking._id)}
+                                        >
+                                            Cancel
+                                        </Button>
+                                    </div>
+                                )}
+                                {booking.status === 'confirmed' && (
+                                    <Typography color="primary">Confirmed</Typography>
+                                )}
+                                {booking.status === 'cancelled' && (
+                                    <Typography color="error">Cancelled</Typography>
+                                )}
                                 </TableCell>
                             </TableRow>
                         ))}
